@@ -1,5 +1,7 @@
 package com.example.RentCars.model;
 
+import com.example.RentCars.model.dto.AluguelDTO;
+
 public class Aluguel {
 
     private int idCliente;
@@ -19,6 +21,10 @@ public class Aluguel {
         this.dt_Saida = dt_Saida;
         this.hr_Entrega = hr_Entrega;
         this.dt_Entrega = dt_Entrega;
+    }
+
+    public Aluguel(AluguelDTO aluguelDTO) {
+
     }
 
     public int getIdCliente() {
@@ -67,5 +73,21 @@ public class Aluguel {
 
     public void setDt_Entrega(int dt_Entrega) {
         this.dt_Entrega = dt_Entrega;
+    }
+
+    public Carro getCarro() {
+        return null;
+    }
+
+    public Carro getCliente() {
+        return null;
+    }
+
+    public void setCarro(Carro carro) {
+
+    }
+
+    public void setCliente(Cliente cliente) {
+
     }
 }

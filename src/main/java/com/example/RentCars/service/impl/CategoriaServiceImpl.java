@@ -3,7 +3,6 @@ package com.example.RentCars.service.impl;
 
 import com.example.RentCars.model.Categorias;
 import com.example.RentCars.model.dto.CategoriasDTO;
-import com.example.RentCars.repository.ICarroRepository;
 import com.example.RentCars.repository.ICategoriasRepository;
 import com.example.RentCars.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,11 @@ public class CategoriaServiceImpl implements IService<CategoriasDTO> {
     public CategoriasDTO getById(int id) {
         Categorias categorias = categoriasRepository.findById(id).get();
         return new CategoriasDTO(categorias);
+    }
+
+    @Override
+    public String delete(int id) {
+        return null;
     }
 
     @Override

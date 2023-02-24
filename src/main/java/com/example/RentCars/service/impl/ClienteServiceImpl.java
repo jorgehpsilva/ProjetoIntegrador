@@ -5,7 +5,6 @@ import com.example.RentCars.model.Cliente;
 import com.example.RentCars.model.dto.CategoriasDTO;
 import com.example.RentCars.model.dto.ClienteDTO;
 import com.example.RentCars.repository.IClienteRepository;
-import com.example.RentCars.service.ClienteService;
 import com.example.RentCars.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +44,11 @@ public class ClienteServiceImpl implements IService<ClienteDTO> {
         return clienteDTO;
     }
 
+    @Override
+    public String delete(int id) {
+        return null;
+    }
+
     public boolean ifClienteExists(int id) {
         return clienteRepository.existsById(id);
     }
@@ -52,7 +56,7 @@ public class ClienteServiceImpl implements IService<ClienteDTO> {
     @Override
     public ClienteDTO update(ClienteDTO clienteDTO) {
         Cliente cliente = new Cliente(clienteDTO);
-        cliente = clienteRepository.saveAllAndFlush(cliente);
+        //cliente = clienteRepository.saveAllAndFlush(cliente);
         clienteDTO = new ClienteDTO(cliente);
         return clienteDTO;
     }

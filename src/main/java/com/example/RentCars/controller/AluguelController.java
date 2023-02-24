@@ -1,23 +1,65 @@
 package com.example.RentCars.controller;
 
 
-import com.example.RentCars.model.Aluguel;
-import com.example.RentCars.service.AluguelService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.RentCars.exceptions.ProcessErrorException;
+import com.example.RentCars.exceptions.ResourceNotFoundException;
+import com.example.RentCars.model.dto.AluguelDTO;
+import com.example.RentCars.service.impl.AluguelServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/alugueis")
 public class AluguelController {
 
-    private AluguelService aluguelService = new AluguelService();
+    @Autowired
+    private AluguelServiceImpl aluguelService;
 
-    @GetMapping("/")
-    public Aluguel criarAluguel() {
-        return aluguelService.criarAluguel(1, 1, 900, 10/01, 900, 12/01);
+    @PostMapping("/salvar")
+    public ResponseEntity<AluguelDTO> create(@RequestBody AluguelDTO aluguelDTO) throws ProcessErrorException {
+        try {
+            return ResponseEntity.ok(aluguelService.create(aluguelDTO));
+        } catch (Exception e) {
+            throw new ProcessErrorException("Um carro foi adicionado");
+        }
     }
 
-    @GetMapping("criar2")
-    public Aluguel criarAluguel2() {
-        return aluguelService.criarAluguel(2, 2, 900, 10/01, 900, 12/01);
+    @GetMapping("/{id}")
+    public ResponseEntity<AluguelDTO> getById(@PathVariable int id) throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(aluguelService.getById(id));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Carro não encontrado" + id);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AluguelDTO>> getAll() throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(aluguelService.getAll());
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Carros não encontrados");
+        }
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id) throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(aluguelService.delete(id));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Carro não encontrado" + id);
+        }
+    }
+
+    @PutMapping("/atualizar")
+    public ResponseEntity<AluguelDTO> update(@RequestBody AluguelDTO aluguelDTO) throws ProcessErrorException {
+        try {
+            return ResponseEntity.ok(aluguelService.update(aluguelDTO));
+        } catch (Exception e) {
+            throw new ProcessErrorException("Não foi possível atualizar");
+        }
     }
 }

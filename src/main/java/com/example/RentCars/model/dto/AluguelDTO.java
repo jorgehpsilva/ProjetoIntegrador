@@ -35,6 +35,10 @@ public class AluguelDTO {
     public AluguelDTO() {
     }
 
+    public AluguelDTO(Aluguel aluguel) {
+
+    }
+
     public int getIdCliente() {
         return idCliente;
     }

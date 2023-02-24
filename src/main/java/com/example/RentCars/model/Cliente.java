@@ -1,5 +1,7 @@
 package com.example.RentCars.model;
 
+import com.example.RentCars.model.dto.ClienteDTO;
+
 public class Cliente {
 
     private int id;
@@ -19,6 +21,10 @@ public class Cliente {
         this.email = email;
         this.senha = senha;
         this.admin = admin;
+    }
+
+    public Cliente(ClienteDTO clienteDTO) {
+
     }
 
     public int getId() {
@@ -67,5 +73,13 @@ public class Cliente {
 
     public void setAdmin(String admin) {
         this.admin = admin;
+    }
+
+    public Carro getCategorias() {
+            return null;
+    }
+
+    public void setCategorias(Categorias categorias) {
+
     }
 }

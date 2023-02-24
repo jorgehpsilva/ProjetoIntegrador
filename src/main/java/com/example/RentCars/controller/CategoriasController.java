@@ -1,28 +1,65 @@
 package com.example.RentCars.controller;
 
 
-import com.example.RentCars.model.Categorias;
-import com.example.RentCars.service.CategoriasService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.RentCars.exceptions.ProcessErrorException;
+import com.example.RentCars.exceptions.ResourceNotFoundException;
+import com.example.RentCars.model.dto.CategoriasDTO;
+import com.example.RentCars.service.impl.CategoriaServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/categorias")
 public class CategoriasController {
 
-    private CategoriasService categoriasService = new CategoriasService();
+    @Autowired
+    private CategoriaServiceImpl categoriaService;
 
-    @GetMapping("/")
-    public Categorias selecionarCategorias() {
-        return categoriasService.selecionarCategorias(1, "Econômico", "Baixo consumo de combústivel", "www.imagem.com");
+    @PostMapping("/salvar")
+    public ResponseEntity<CategoriasDTO> create(@RequestBody CategoriasDTO categoriasDTO) throws ProcessErrorException {
+        try {
+            return ResponseEntity.ok(categoriaService.create(categoriasDTO));
+        } catch (Exception e) {
+            throw new ProcessErrorException("Categoria atualizada");
+        }
     }
 
-    @GetMapping("selecionar2")
-    public Categorias selecionarCategorias2() {
-        return categoriasService.selecionarCategorias(2, "Sedan", "Maior espaço, economia e desempenho", "www.imagem.com");
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoriasDTO> getById(@PathVariable int id) throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(categoriaService.getById(id));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Categoria não atualizada" + id);
+        }
     }
 
-    @GetMapping("selecionar3")
-    public Categorias selecionarCategorias3() {
-        return categoriasService.selecionarCategorias(3, "Luxo", "Conforto, desempenho e estilo", "www.imagem.com");
+    @GetMapping
+    public ResponseEntity<List<CategoriasDTO>> getAll() throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(categoriaService.getAll());
+        } catch(Exception e) {
+            throw new ResourceNotFoundException("Categorias não encontradas");
+        }
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<String> delete (@PathVariable int id) throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(categoriaService.delete(id));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Categoria não encontrada" + id);
+        }
+    }
+
+    @PutMapping("/atualizar")
+    public ResponseEntity<CategoriasDTO> update(@RequestBody CategoriasDTO categoriasDTO) throws ProcessErrorException {
+        try {
+            return ResponseEntity.ok(categoriaService.update(categoriasDTO));
+        } catch (Exception e) {
+            throw new ProcessErrorException("Um categoria foi atualizada");
+        }
     }
 }

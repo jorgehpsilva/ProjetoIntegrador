@@ -1,32 +1,74 @@
 package com.example.RentCars.controller;
 
 
-import com.example.RentCars.model.Carro;
-import com.example.RentCars.service.CarroService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.RentCars.exceptions.ProcessErrorException;
+import com.example.RentCars.exceptions.ResourceNotFoundException;
+import com.example.RentCars.model.dto.CarroDTO;
+import com.example.RentCars.service.impl.CarroServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/carros")
 public class CarroController {
 
-    private CarroService carroService = new CarroService();
+    @Autowired
+    private CarroServiceImpl carroService;
 
-    @GetMapping("/")
-    public Carro selecionarCarro() {
-        return carroService.selecionarCarro(1, "Ka", "Ford", "Branco", "Econômico");
-
+    @PostMapping("/salvar")
+    public ResponseEntity<CarroDTO> create(@RequestBody CarroDTO carroDTO) throws ProcessErrorException {
+        try {
+            return ResponseEntity.ok(carroService.create(carroDTO));
+        } catch (Exception e) {
+            throw new ProcessErrorException("Um carro foi adicionado");
+        }
     }
 
-
-    @GetMapping("selecionar2")
-    public Carro selecionarCarro2() {
-        return carroService.selecionarCarro(2, "Fiesta", "Ford", "Prata", "Sedan");
-
+    @GetMapping("/{id}")
+    public ResponseEntity<CarroDTO> getById(@PathVariable int id) throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(carroService.getById(id));
+        } catch (Exception e){
+            throw new ResourceNotFoundException("Carro não encontrado" + id);
+        }
     }
 
-    @GetMapping("selecionar3")
-    public Carro selecionarCarro3() {
-        return carroService.selecionarCarro(3, "Fusion", "Ford", "Preto", "Luxo");
+    @GetMapping
+    public ResponseEntity<List<CarroDTO>> getAll() throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(carroService.getAll());
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Carros não encontrados");
+        }
+    }
 
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id) throws ResourceNotFoundException{
+        try {
+            return ResponseEntity.ok(carroService.delete(id));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Carro não encontrado" + id);
+        }
+    }
+
+    @PutMapping("/atualizar")
+    public ResponseEntity<CarroDTO> update(@RequestBody CarroDTO carroDTO) throws ProcessErrorException {
+        try {
+            return ResponseEntity.ok(carroService.update(carroDTO));
+        } catch (Exception e) {
+            throw new ProcessErrorException("Não foi possível atualizar");
+        }
+    }
+
+    @GetMapping("/getByNome")
+    public ResponseEntity<CarroDTO> getByNome(@RequestParam(value = "nome") String nome) throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(carroService.getByNome(nome));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Carro não encontrado");
+        }
     }
 }

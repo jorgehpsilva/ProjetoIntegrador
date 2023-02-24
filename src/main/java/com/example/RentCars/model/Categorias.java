@@ -1,5 +1,7 @@
 package com.example.RentCars.model;
 
+import com.example.RentCars.model.dto.CategoriasDTO;
+
 public class Categorias {
 
     private int id;
@@ -15,6 +17,10 @@ public class Categorias {
         this.qualificacao = qualificacao;
         this.descricao = descricao;
         this.url = url;
+    }
+
+    public Categorias(CategoriasDTO categoriasDTO) {
+
     }
 
     public int getId() {
