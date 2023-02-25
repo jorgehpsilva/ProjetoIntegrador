@@ -9,14 +9,19 @@ import com.example.RentCars.model.dto.CarroDTO;
 import com.example.RentCars.model.dto.ClienteDTO;
 import com.example.RentCars.repository.IAluguelRepository;
 import com.example.RentCars.service.IService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AluguelServiceImpl implements IService<AluguelDTO> {
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Autowired
     private IAluguelRepository aluguelRepository;
@@ -28,34 +33,20 @@ public class AluguelServiceImpl implements IService<AluguelDTO> {
     private ClienteServiceImpl clienteService;
 
     @Override
-    public AluguelDTO create(AluguelDTO aluguelDTO) {
-        Aluguel aluguel = new Aluguel(aluguelDTO);
-        CarroDTO carroDTO;
-        int idCarro = aluguel.getCarro().getId();
-        ClienteDTO clienteDTO;
-        int idCliente = aluguel.getCliente().getId();
-
-        if (carroService.ifCarroExists(idCarro) && clienteService.ifClienteExists(idCliente)) {
-            carroDTO = carroService.getById(idCarro);
-            Carro carro = new Carro(carroDTO);
-            aluguel.setCarro(carro);
-            clienteDTO = clienteService.getById(idCliente);
-            Cliente cliente = new Cliente(clienteDTO);
-            aluguel.setCliente(cliente);
-            aluguel = aluguelRepository.save(aluguel);
-        }
-
-        aluguelDTO = new AluguelDTO(aluguel);
-        return aluguelDTO;
+    public AluguelDTO create(AluguelDTO aluguelDTO) throws Exception {
+        validateParams(aluguelDTO);
+        Aluguel aluguelMapped = modelMapper.map(aluguelDTO, Aluguel.class);
+        Aluguel aluguelSaved = aluguelRepository.save(aluguelMapped);
+        return modelMapper.map(aluguelSaved, AluguelDTO.class);
     }
 
     @Override
-    public AluguelDTO getById(int id) {
-        Aluguel aluguel = aluguelRepository.findById(id).get();
-        AluguelDTO aluguelDTO = new AluguelDTO(aluguel);
-
-        return aluguelDTO;
-
+    public AluguelDTO getById(int id) throws Exception {
+        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(id);
+        if(!aluguelOptional.isPresent()) {
+            throw new Exception("Carro não encotrado!");
+        }
+        return modelMapper.map(aluguelOptional.get(), AluguelDTO.class);
     }
 
     @Override
@@ -82,6 +73,11 @@ public class AluguelServiceImpl implements IService<AluguelDTO> {
             aluguelDTOS.add(aluguelDTO);
         }
         return aluguelDTOS;
+    }
+
+    private void validateParams(AluguelDTO aluguelDTO) throws Exception {
+        carroService.getById(aluguelDTO.getIdCarro());
+        clienteService.getById(aluguelDTO.getIdCliente());
     }
 }
 

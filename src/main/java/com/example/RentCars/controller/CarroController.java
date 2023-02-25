@@ -5,6 +5,8 @@ import com.example.RentCars.exceptions.ProcessErrorException;
 import com.example.RentCars.exceptions.ResourceNotFoundException;
 import com.example.RentCars.model.dto.CarroDTO;
 import com.example.RentCars.service.impl.CarroServiceImpl;
+import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,28 +18,25 @@ import java.util.List;
 public class CarroController {
 
     @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
     private CarroServiceImpl carroService;
 
-    @PostMapping("/salvar")
-    public ResponseEntity<CarroDTO> create(@RequestBody CarroDTO carroDTO) throws ProcessErrorException {
-        try {
-            return ResponseEntity.ok(carroService.create(carroDTO));
-        } catch (Exception e) {
-            throw new ProcessErrorException("Um carro foi adicionado");
-        }
+    @PostMapping
+    public ResponseEntity<CarroDTO> create(@Valid @RequestBody CarroDTO carroDTO) throws Exception {
+        CarroDTO carro = carroService.create(carroDTO);
+        CarroDTO carroDTOMapped = modelMapper.map(carro,CarroDTO.class);
+        return ResponseEntity.ok(carroDTOMapped);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CarroDTO> getById(@PathVariable int id) throws ResourceNotFoundException {
-        try {
-            return ResponseEntity.ok(carroService.getById(id));
-        } catch (Exception e){
-            throw new ResourceNotFoundException("Carro não encontrado" + id);
-        }
+    public ResponseEntity<CarroDTO> getById(@PathVariable int id) throws Exception {
+        CarroDTO carroDTO = carroService.getById(id);
+        return ResponseEntity.ok(carroDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<CarroDTO>> getAll() throws ResourceNotFoundException {
+    public ResponseEntity<List<CarroDTO>> getAll() throws Exception {
         try {
             return ResponseEntity.ok(carroService.getAll());
         } catch (Exception e) {
@@ -45,8 +44,8 @@ public class CarroController {
         }
     }
 
-    @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<String> delete(@PathVariable int id) throws ResourceNotFoundException{
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id) throws Exception{
         try {
             return ResponseEntity.ok(carroService.delete(id));
         } catch (Exception e) {
@@ -54,8 +53,8 @@ public class CarroController {
         }
     }
 
-    @PutMapping("/atualizar")
-    public ResponseEntity<CarroDTO> update(@RequestBody CarroDTO carroDTO) throws ProcessErrorException {
+    @PutMapping
+    public ResponseEntity<CarroDTO> update(@RequestBody CarroDTO carroDTO) throws Exception {
         try {
             return ResponseEntity.ok(carroService.update(carroDTO));
         } catch (Exception e) {
@@ -63,8 +62,8 @@ public class CarroController {
         }
     }
 
-    @GetMapping("/getByNome")
-    public ResponseEntity<CarroDTO> getByNome(@RequestParam(value = "nome") String nome) throws ResourceNotFoundException {
+    @GetMapping
+    public ResponseEntity<CarroDTO> getByNome(@RequestParam(value = "nome") String nome) throws Exception {
         try {
             return ResponseEntity.ok(carroService.getByNome(nome));
         } catch (Exception e) {

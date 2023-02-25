@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface IService<T> {
 
-    T create(T t);
-    T getById(int id);
+    T create(T t) throws Exception;
+    T getById(int id) throws Exception;
 
     String delete(int id);
 

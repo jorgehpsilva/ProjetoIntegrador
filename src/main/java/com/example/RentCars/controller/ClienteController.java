@@ -5,6 +5,8 @@ import com.example.RentCars.exceptions.ResourceNotFoundException;
 import com.example.RentCars.model.Cliente;
 import com.example.RentCars.model.dto.ClienteDTO;
 import com.example.RentCars.service.impl.ClienteServiceImpl;
+import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,28 +18,26 @@ import java.util.List;
 public class ClienteController {
 
     @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     private ClienteServiceImpl clienteService;
 
-    @PostMapping("/salvar")
-    public ResponseEntity<ClienteDTO> create(@RequestBody ClienteDTO clienteDTO) throws ProcessErrorException {
-        try {
-            return ResponseEntity.ok(clienteService.create(clienteDTO));
-        } catch (Exception e) {
-            throw new ProcessErrorException("Um cliente foi adicionado");
-        }
+    @PostMapping
+    public ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO clienteDTO) throws Exception {
+        ClienteDTO cliente = clienteService.create(clienteDTO);
+        ClienteDTO clienteDTOMapped = modelMapper.map(cliente, ClienteDTO.class);
+        return ResponseEntity.ok(clienteDTOMapped);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteDTO> getById(@PathVariable int id) throws ResourceNotFoundException {
-        try {
-            return ResponseEntity.ok(clienteService.getById(id));
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Cliente não encontrado" + id);
-        }
+    public ResponseEntity<ClienteDTO> getById(@PathVariable int id) throws Exception {
+        ClienteDTO clienteDTO = clienteService.getById(id);
+        return ResponseEntity.ok(clienteDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<ClienteDTO>> getAll() throws ResourceNotFoundException {
+    public ResponseEntity<List<ClienteDTO>> getAll() throws Exception {
         try {
             return ResponseEntity.ok(clienteService.getAll());
         } catch (Exception e) {
@@ -45,8 +45,8 @@ public class ClienteController {
         }
     }
 
-    @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<String> delete(@PathVariable int id) throws ResourceNotFoundException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id) throws Exception {
         try {
             return ResponseEntity.ok(clienteService.delete(id));
         } catch (Exception e) {
@@ -54,8 +54,8 @@ public class ClienteController {
         }
     }
 
-    @PutMapping("/atualizar")
-    public ResponseEntity<ClienteDTO> update(@RequestBody ClienteDTO clienteDTO) throws ProcessErrorException {
+    @PutMapping
+    public ResponseEntity<ClienteDTO> update(@RequestBody ClienteDTO clienteDTO) throws Exception {
         try {
             return ResponseEntity.ok(clienteService.update(clienteDTO));
         } catch (Exception e){
@@ -63,8 +63,8 @@ public class ClienteController {
         }
     }
 
-    @GetMapping("/getByNome")
-    public ResponseEntity<ClienteDTO> getByNome(@RequestParam(value = "nome") String nome) throws ResourceNotFoundException {
+    @GetMapping
+    public ResponseEntity<ClienteDTO> getByNome(@RequestParam(value = "nome") String nome) throws Exception {
         try {
             return ResponseEntity.ok(clienteService.getByNome(nome));
         } catch (Exception e) {
