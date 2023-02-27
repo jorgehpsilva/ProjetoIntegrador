@@ -1,9 +1,14 @@
 package com.example.RentCars.model;
 
 import com.example.RentCars.model.dto.AluguelDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.sql.Date;
+import java.sql.Time;
 
 @Data
 @Entity
@@ -19,17 +24,27 @@ public class Aluguel {
 
     @JoinColumn(name="cliente_id")
     private int idCliente;
-        @JoinColumn(name="carro_id")
+    @JoinColumn(name="carro_id")
     private int idCarro;
-    private int hr_Saida;
-    private int dt_Saida;
-    private int hr_Entrega;
-    private int dt_Entrega;
+
+    @DateTimeFormat(pattern="hh:mm:ss")
+    private Time hr_Saida;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date dt_Saida;
+
+    @DateTimeFormat(pattern="hh:mm:ss")
+    private Time hr_Entrega;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date dt_Entrega;
 
     public Aluguel() {
     }
 
-    public Aluguel(int idCliente, int idCarro, int hr_Saida, int dt_Saida, int hr_Entrega, int dt_Entrega) {
+    public Aluguel(int idCliente, int idCarro, Time hr_Saida, Date dt_Saida, Time hr_Entrega, Date dt_Entrega) {
         this.idCliente = idCliente;
         this.idCarro = idCarro;
         this.hr_Saida = hr_Saida;
