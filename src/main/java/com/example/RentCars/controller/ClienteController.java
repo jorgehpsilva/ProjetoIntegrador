@@ -2,7 +2,6 @@ package com.example.RentCars.controller;
 
 import com.example.RentCars.exceptions.ProcessErrorException;
 import com.example.RentCars.exceptions.ResourceNotFoundException;
-import com.example.RentCars.model.Cliente;
 import com.example.RentCars.model.dto.ClienteDTO;
 import com.example.RentCars.service.impl.ClienteServiceImpl;
 import jakarta.validation.Valid;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -64,8 +62,8 @@ public class ClienteController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<ClienteDTO> getByNome(@RequestParam(value = "nome") String nome) throws Exception {
+    @GetMapping("/nome")
+    public ResponseEntity<ClienteDTO> getByNome(@RequestParam String nome) throws Exception {
         try {
             return ResponseEntity.ok(clienteService.getByNome(nome));
         } catch (Exception e) {

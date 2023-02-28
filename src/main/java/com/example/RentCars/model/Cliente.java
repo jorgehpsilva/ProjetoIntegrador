@@ -1,22 +1,21 @@
 package com.example.RentCars.model;
 
 import com.example.RentCars.model.dto.ClienteDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name = "tb_cliente")
+@Table(name = "cliente")
 
 public class Cliente {
 
     @Id
     @Column(name="id")
     @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
 
     private int id;
     private String nome;
