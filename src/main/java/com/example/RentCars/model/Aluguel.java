@@ -12,23 +12,21 @@ import java.sql.Time;
 
 @Data
 @Entity
-@Table(name = "aluguel")
-
+@Table(name = "alugueis")
 public class Aluguel {
 
     @Id
     @Column(name="id")
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private int id;
 
     @OneToOne
     @JoinColumn(name="cliente_id")
-    private Cliente idCliente;
+    private Cliente cliente;
     @OneToOne
     @JoinColumn(name="carro_id")
-    private Carro idCarro;
+    private Carro carro;
 
     @DateTimeFormat(pattern="hh:mm:ss")
     private Time hr_Saida;
@@ -47,17 +45,14 @@ public class Aluguel {
     public Aluguel() {
     }
 
-    public Aluguel(Cliente idCliente, Carro idCarro, Time hr_Saida, Date dt_Saida, Time hr_Entrega, Date dt_Entrega) {
-        this.idCliente = idCliente;
-        this.idCarro = idCarro;
+    public Aluguel(Cliente cliente, Carro carro, Time hr_Saida, Date dt_Saida, Time hr_Entrega, Date dt_Entrega) {
+        this.cliente = cliente;
+        this.carro = carro;
         this.hr_Saida = hr_Saida;
         this.dt_Saida = dt_Saida;
         this.hr_Entrega = hr_Entrega;
         this.dt_Entrega = dt_Entrega;
     }
     public Aluguel(AluguelDTO aluguelDTO) {
-}
-    public void setCliente(Cliente cliente) {
-
     }
 }

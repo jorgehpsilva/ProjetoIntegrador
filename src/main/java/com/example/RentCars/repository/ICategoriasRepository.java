@@ -1,7 +1,9 @@
 package com.example.RentCars.repository;
 
-import com.example.RentCars.model.Categorias;
+import com.example.RentCars.model.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ICategoriasRepository extends JpaRepository<Categorias,Integer> {
+@Repository
+public interface ICategoriasRepository extends JpaRepository<Categoria,Integer> {
 }

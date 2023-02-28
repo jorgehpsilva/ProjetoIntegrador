@@ -1,6 +1,6 @@
 package com.example.RentCars.service.impl;
 
-import com.example.RentCars.model.Categorias;
+import com.example.RentCars.model.Categoria;
 import com.example.RentCars.model.Cliente;
 import com.example.RentCars.model.dto.CategoriasDTO;
 import com.example.RentCars.model.dto.ClienteDTO;
@@ -29,8 +29,8 @@ public class ClienteServiceImpl implements IService<ClienteDTO> {
         int idCategorias = cliente.getCategorias().getId();
         if (categoriaService.ifCategoriasExists(idCategorias)) {
             categoriasDTO = categoriaService.getById(idCategorias);
-            Categorias categorias = new Categorias(categoriasDTO);
-            cliente.setCategorias(categorias);
+            Categoria categoria = new Categoria(categoriasDTO);
+            cliente.setCategorias(categoria);
             cliente = clienteRepository.save(cliente);
         }
         clienteDTO = new ClienteDTO(cliente);
