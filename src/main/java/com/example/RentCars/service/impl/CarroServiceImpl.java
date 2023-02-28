@@ -68,8 +68,8 @@ public class CarroServiceImpl implements IService<CarroDTO> {
         return carroDTOS;
     }
 
-    public CarroDTO getByNome(String nome) {
-        Carro carro = carroRepository.findByNome(nome);
+    public CarroDTO getByModelo(String modelo) {
+        Carro carro = carroRepository.findByModelo(modelo);
         CarroDTO carroDTO = new CarroDTO(carro);
         return carroDTO;
 

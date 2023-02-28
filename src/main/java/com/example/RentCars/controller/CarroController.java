@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -63,10 +62,10 @@ public class CarroController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<CarroDTO> getByNome(@RequestParam(value = "nome") String nome) throws Exception {
+    @GetMapping("/modelo")
+    public ResponseEntity<CarroDTO> getByModelo(@RequestParam String modelo) throws Exception {
         try {
-            return ResponseEntity.ok(carroService.getByNome(nome));
+            return ResponseEntity.ok(carroService.getByModelo(modelo));
         } catch (Exception e) {
             throw new ResourceNotFoundException("Carro não encontrado");
         }

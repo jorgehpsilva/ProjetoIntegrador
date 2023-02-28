@@ -1,32 +1,32 @@
 package com.example.RentCars.model;
 
 import com.example.RentCars.model.dto.CarroDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name = "tb_carro")
+@Table(name = "carro")
 public class Carro {
 
     @Id
     @Column(name = "id")
     @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private int id;
     private String modelo;
     private String marca;
     private String cor;
-    private int idCategoria;
+    @OneToOne
+    @JoinColumn(name="categoria_id")
+    private Categorias idCategoria;
 
     public Carro() {
     }
 
-    public Carro(int id, String modelo, String marca, String cor, int idCategoria) {
+    public Carro(int id, String modelo, String marca, String cor, Categorias idCategoria) {
         this.id = id;
         this.modelo = modelo;
         this.marca = marca;
@@ -70,11 +70,11 @@ public class Carro {
         this.cor = cor;
     }
 
-    public int getIdCategoria() {
+    public Categorias getIdCategoria() {
         return idCategoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
+    public void setIdCategoria(Categorias idCategoria) {
         this.idCategoria = idCategoria;
     }
 }

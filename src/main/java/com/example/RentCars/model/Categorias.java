@@ -1,21 +1,19 @@
 package com.example.RentCars.model;
 
 import com.example.RentCars.model.dto.CategoriasDTO;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@Table(name ="tb_categorias")
+@Table(name ="categorias")
 public class Categorias {
 
     @Id
     @Column(name="id")
     @EqualsAndHashCode.Include
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private int id;
     private String qualificacao;
