@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class ClienteDTO {
 
-    private int id;
     private String nome;
     private String sobrenome;
     private String email;
@@ -17,7 +16,6 @@ public class ClienteDTO {
     }
 
     public ClienteDTO(Cliente cliente) {
-        this.id = id;
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;
@@ -25,8 +23,7 @@ public class ClienteDTO {
         this.admin = admin;
     }
 
-    public ClienteDTO(int id, String nome, String sobrenome, String email, String senha, String admin) {
-        this.id = id;
+    public ClienteDTO(String nome, String sobrenome, String email, String senha, String admin) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;

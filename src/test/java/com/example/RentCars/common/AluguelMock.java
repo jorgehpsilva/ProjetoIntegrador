@@ -5,6 +5,9 @@ import com.example.RentCars.model.dto.AluguelDTO;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 public class AluguelMock {
 
@@ -29,7 +32,12 @@ public class AluguelMock {
         return aluguel;
     }
 
-    private Aluguel getAluguelDefault() {
+    public Optional<Aluguel> getOptionalAluguel(){
+        Aluguel aluguel = getAluguelWithId();
+        return Optional.of(aluguel);
+    }
+
+    public Aluguel getAluguelDefault() {
         Aluguel aluguel = new Aluguel();
         aluguel.setId(1);
         aluguel.setCarro(carroMock.getCarroWithId());
@@ -41,4 +49,20 @@ public class AluguelMock {
         return aluguel;
     }
 
+    public List<Aluguel> getAluguelListTest() {
+        List<Aluguel> alugueis = new LinkedList<>();
+
+        for (int i = 0; i < 5; i++) {
+            Aluguel aluguel = new Aluguel();
+            aluguel.setId(i);
+            aluguel.setCarro(carroMock.getCarroWithId());
+            aluguel.setCliente(clienteMock.getClienteWithId());
+            aluguel.setDt_Entrega(new Date(2023,2,28));
+            aluguel.setDt_Saida(new Date(2023,2,1));
+            aluguel.setHr_Entrega(new Time(1,0,0));
+            aluguel.setHr_Saida(new Time(9,9,9));
+            alugueis.add(aluguel);
+        }
+        return alugueis;
+    }
 }

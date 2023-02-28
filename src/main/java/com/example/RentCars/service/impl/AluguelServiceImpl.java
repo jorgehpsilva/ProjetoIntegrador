@@ -41,29 +41,6 @@ public class AluguelServiceImpl implements IService<AluguelDTO> {
     }
 
     @Override
-    public AluguelDTO getById(int id) throws Exception {
-        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(id);
-        if(!aluguelOptional.isPresent()) {
-            throw new Exception("Carro não encotrado!");
-        }
-        return modelMapper.map(aluguelOptional.get(), AluguelDTO.class);
-    }
-
-    @Override
-    public String delete(int id) {
-        aluguelRepository.deleteById(id);
-        return "Aluguel deletado" + id;
-    }
-
-    @Override
-    public AluguelDTO update(AluguelDTO aluguelDTO) {
-        Aluguel aluguel = new Aluguel(aluguelDTO);
-        aluguel = aluguelRepository.saveAndFlush(aluguel);
-        aluguelDTO = new AluguelDTO(aluguel);
-        return aluguelDTO;
-    }
-
-    @Override
     public List<AluguelDTO> getAll() {
         List<Aluguel> aluguelList = aluguelRepository.findAll();
         List<AluguelDTO> aluguelDTOS = new ArrayList<>();
@@ -73,6 +50,29 @@ public class AluguelServiceImpl implements IService<AluguelDTO> {
             aluguelDTOS.add(aluguelDTO);
         }
         return aluguelDTOS;
+    }
+
+    @Override
+    public AluguelDTO getById(int id) throws Exception {
+        Optional<Aluguel> aluguelOptional = aluguelRepository.findById(id);
+        if(!aluguelOptional.isPresent()) {
+            throw new Exception("Aluguel não encontrado!");
+        }
+        return modelMapper.map(aluguelOptional.get(), AluguelDTO.class);
+    }
+
+    @Override
+    public AluguelDTO updateById(int id, AluguelDTO aluguelDTO) throws Exception {
+        AluguelDTO aluguelFound = getById(id);
+        validateParams(aluguelFound);
+        Aluguel aluguelSaved = aluguelRepository.saveAndFlush(modelMapper.map(aluguelFound, Aluguel.class));
+        return modelMapper.map(aluguelSaved, AluguelDTO.class);
+    }
+
+    @Override
+    public String deleteById(int id) {
+        aluguelRepository.deleteById(id);
+        return "Aluguel deletado " + id;
     }
 
     private void validateParams(AluguelDTO aluguelDTO) throws Exception {

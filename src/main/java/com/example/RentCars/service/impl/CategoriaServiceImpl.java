@@ -2,61 +2,69 @@ package com.example.RentCars.service.impl;
 
 
 import com.example.RentCars.model.Categoria;
-import com.example.RentCars.model.dto.CategoriasDTO;
-import com.example.RentCars.repository.ICategoriasRepository;
+import com.example.RentCars.model.dto.CategoriaDTO;
+import com.example.RentCars.repository.ICategoriaRepository;
 import com.example.RentCars.service.IService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class CategoriaServiceImpl implements IService<CategoriasDTO> {
+public class CategoriaServiceImpl implements IService<CategoriaDTO> {
 
     @Autowired
-    private ICategoriasRepository categoriasRepository;
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private ICategoriaRepository categoriaRepository;
 
     @Override
-    public CategoriasDTO create(CategoriasDTO categoriasDTO) {
-        Categoria categoria = new Categoria(categoriasDTO);
-        categoria = categoriasRepository.save(categoria);
-        categoriasDTO = new CategoriasDTO(categoria);
-        return categoriasDTO;
+    public CategoriaDTO create(CategoriaDTO categoriaDTO) {
+        Categoria categoria = new Categoria(categoriaDTO);
+        categoria = categoriaRepository.save(categoria);
+        categoriaDTO = new CategoriaDTO(categoria);
+        return categoriaDTO;
     }
 
     @Override
-    public CategoriasDTO getById(int id) {
-        Categoria categoria = categoriasRepository.findById(id).get();
-        return new CategoriasDTO(categoria);
+    public List<CategoriaDTO> getAll() {
+        List<Categoria> categoriaList = categoriaRepository.findAll();
+        List<CategoriaDTO> categoriaDTOS = new ArrayList<>();
+
+        for (Categoria categoria : categoriaList) {
+            CategoriaDTO categoriaDTO = new CategoriaDTO(categoria);
+            categoriaDTOS.add(categoriaDTO);
+        }
+        return categoriaDTOS;
     }
 
     @Override
-    public String delete(int id) {
-        return null;
+    public CategoriaDTO getById(int id) throws Exception {
+        Optional<Categoria> categoriaOptional = categoriaRepository.findById(id);
+        if (!categoriaOptional.isPresent()) {
+            throw new Exception("Categoria não encontrado");
+        }
+        return modelMapper.map(categoriaOptional.get(), CategoriaDTO.class);
     }
 
     @Override
-    public CategoriasDTO update(CategoriasDTO categoriasDTO) {
-        Categoria categoria = new Categoria(categoriasDTO);
-        categoriasRepository.saveAndFlush(categoria);
-        categoriasDTO = new CategoriasDTO(categoria);
-        return categoriasDTO;
+    public CategoriaDTO updateById(int id, CategoriaDTO categoriaDTO) throws Exception {
+        CategoriaDTO categoriaFound = getById(id);
+        Categoria categoria = categoriaRepository.saveAndFlush(modelMapper.map(categoriaFound, Categoria.class));
+        return modelMapper.map(categoria, CategoriaDTO.class);
+    }
+
+    @Override
+    public String deleteById(int id) {
+        categoriaRepository.deleteById(id);
+        return "Categoria deletada" + id;
     }
 
     public boolean ifCategoriasExists(int id) {
-        return categoriasRepository.existsById(id);
-    }
-
-    @Override
-    public List<CategoriasDTO> getAll() {
-        List<Categoria> categoriaList = categoriasRepository.findAll();
-        List<CategoriasDTO> categoriasDTOS = new ArrayList<>();
-
-        for (Categoria categoria : categoriaList) {
-            CategoriasDTO categoriasDTO = new CategoriasDTO(categoria);
-            categoriasDTOS.add(categoriasDTO);
-        }
-        return categoriasDTOS;
+        return categoriaRepository.existsById(id);
     }
 }

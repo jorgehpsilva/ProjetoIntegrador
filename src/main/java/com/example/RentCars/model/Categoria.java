@@ -1,6 +1,6 @@
 package com.example.RentCars.model;
 
-import com.example.RentCars.model.dto.CategoriasDTO;
+import com.example.RentCars.model.dto.CategoriaDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,21 +16,21 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String qualificacao;
-    private String descricao;
     private String url;
+    private String descricao;
+    private String qualificacao;
 
     public Categoria() {
     }
 
     public Categoria(int id, String qualificacao, String descricao, String url) {
         this.id = id;
-        this.qualificacao = qualificacao;
-        this.descricao = descricao;
         this.url = url;
+        this.descricao = descricao;
+        this.qualificacao = qualificacao;
     }
 
-    public Categoria(CategoriasDTO categoriasDTO) {
+    public Categoria(CategoriaDTO categoriaDTO) {
 
     }
 }

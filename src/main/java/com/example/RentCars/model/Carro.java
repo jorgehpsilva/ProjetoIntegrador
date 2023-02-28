@@ -22,17 +22,17 @@ public class Carro {
 
     @OneToOne
     @JoinColumn(name="categoria_id")
-    private Categoria idCategoria;
+    private Categoria categoria;
 
     public Carro() {
     }
 
-    public Carro(int id, String modelo, String marca, String cor, Categoria idCategoria) {
+    public Carro(int id, String modelo, String marca, String cor, Categoria categoria) {
         this.id = id;
         this.modelo = modelo;
         this.marca = marca;
         this.cor = cor;
-        this.idCategoria = idCategoria;
+        this.categoria = categoria;
     }
 
     public Carro(CarroDTO carroDTO) {

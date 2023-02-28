@@ -7,9 +7,9 @@ public interface IService<T> {
     T create(T t) throws Exception;
     T getById(int id) throws Exception;
 
-    String delete(int id);
+    String deleteById(int id);
 
-    T update(T t);
+    T updateById(int id, T t) throws Exception;
 
     List<T> getAll();
 }
