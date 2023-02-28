@@ -21,12 +21,12 @@ public class Carro {
     private String modelo;
     private String marca;
     private String cor;
-    private String idCategoria;
+    private int idCategoria;
 
     public Carro() {
     }
 
-    public Carro(int id, String modelo, String marca, String cor, String idCategoria) {
+    public Carro(int id, String modelo, String marca, String cor, int idCategoria) {
         this.id = id;
         this.modelo = modelo;
         this.marca = marca;
@@ -70,11 +70,11 @@ public class Carro {
         this.cor = cor;
     }
 
-    public String getIdCategoria() {
+    public int getIdCategoria() {
         return idCategoria;
     }
 
-    public void setIdCategoria(String idCategoria) {
+    public void setIdCategoria(int idCategoria) {
         this.idCategoria = idCategoria;
     }
 }

@@ -4,15 +4,32 @@ import com.example.RentCars.model.Aluguel;
 import com.example.RentCars.model.Carro;
 import com.example.RentCars.model.Categorias;
 import com.example.RentCars.model.Cliente;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.sql.Date;
+import java.sql.Time;
 
 public class AluguelDTO {
 
     private int idCliente;
     private int idCarro;
-    private int hr_Saida;
-    private int dt_Saida;
-    private int hr_Entrega;
-    private int dt_Entrega;
+
+    @DateTimeFormat(pattern = "hh:mm:ss")
+    private Time hr_Saida;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date dt_Saida;
+
+    @DateTimeFormat(pattern = "hh:mm:ss")
+    private Time hr_Entrega;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private Date dt_Entrega;
 
     private Categorias categorias;
 
@@ -20,7 +37,7 @@ public class AluguelDTO {
 
     private Cliente cliente;
 
-    public AluguelDTO(int idCliente, int idCarro, int hr_Saida, int dt_Saida, int hr_Entrega, int dt_Entrega, Categorias categorias, Carro carro, Cliente cliente) {
+    public AluguelDTO(int idCliente, int idCarro, Time hr_Saida, Date dt_Saida, Time hr_Entrega, Date dt_Entrega, Categorias categorias, Carro carro, Cliente cliente) {
         this.idCliente = idCliente;
         this.idCarro = idCarro;
         this.hr_Saida = hr_Saida;
@@ -34,11 +51,9 @@ public class AluguelDTO {
 
     public AluguelDTO() {
     }
-
     public AluguelDTO(Aluguel aluguel) {
 
     }
-
     public int getIdCliente() {
         return idCliente;
     }
@@ -49,65 +64,5 @@ public class AluguelDTO {
 
     public int getIdCarro() {
         return idCarro;
-    }
-
-    public void setIdCarro(int idCarro) {
-        this.idCarro = idCarro;
-    }
-
-    public int getHr_Saida() {
-        return hr_Saida;
-    }
-
-    public void setHr_Saida(int hr_Saida) {
-        this.hr_Saida = hr_Saida;
-    }
-
-    public int getDt_Saida() {
-        return dt_Saida;
-    }
-
-    public void setDt_Saida(int dt_Saida) {
-        this.dt_Saida = dt_Saida;
-    }
-
-    public int getHr_Entrega() {
-        return hr_Entrega;
-    }
-
-    public void setHr_Entrega(int hr_Entrega) {
-        this.hr_Entrega = hr_Entrega;
-    }
-
-    public int getDt_Entrega() {
-        return dt_Entrega;
-    }
-
-    public void setDt_Entrega(int dt_Entrega) {
-        this.dt_Entrega = dt_Entrega;
-    }
-
-    public Categorias getCategorias() {
-        return categorias;
-    }
-
-    public void setCategorias(Categorias categorias) {
-        this.categorias = categorias;
-    }
-
-    public Carro getCarro() {
-        return carro;
-    }
-
-    public void setCarro(Carro carro) {
-        this.carro = carro;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
     }
 }
